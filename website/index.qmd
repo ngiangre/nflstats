@@ -3,3 +3,5 @@ title: Welcome
 ---
 
 ![](https://a.espncdn.com/combiner/i?img=/i/teamlogos/nfl/500/buf.png&h=200&w=200){.lightbox}
+
+Website last rendered at `r Sys.time()`
