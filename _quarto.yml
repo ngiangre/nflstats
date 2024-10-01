@@ -3,6 +3,10 @@ project:
 
 website:
   title: "NFL Stats"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
 
 format:
   html:
