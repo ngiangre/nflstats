@@ -22,13 +22,14 @@ jobs:
         with:
           r-version: '4.2.2'
             
+      - name: Install R packages
+        run: |
+          R -e `install.packages(c('yaml','rmarkdown','knitr'))`
+          
       - name: Install R Dependencies
         uses: r-lib/actions/setup-renv@v2
         with:
           cache-version: 1
-          packages:
-            any::knitr
-            any::rmarkdown
 
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
