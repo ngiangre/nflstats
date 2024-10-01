@@ -1,0 +1,35 @@
+{
+  "R": {
+    "Version": "4.2.2",
+    "Repositories": [
+      {
+        "Name": "CRAN",
+        "URL": "https://packagemanager.posit.co/cran/latest"
+      },
+      {
+        "Name": "all",
+        "URL": "https://packagemanager.posit.co/all/latest"
+      },
+      {
+        "Name": "bioconductor",
+        "URL": "https://packagemanager.posit.co/bioconductor/latest"
+      },
+      {
+        "Name": "pypi",
+        "URL": "https://packagemanager.posit.co/pypi/latest"
+      }
+    ]
+  },
+  "Packages": {
+    "renv": {
+      "Package": "renv",
+      "Version": "1.0.9",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Requirements": [
+        "utils"
+      ],
+      "Hash": "ef233f0e9064fc88c898b340c9add5c2"
+    }
+  }
+}
