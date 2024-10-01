@@ -5,9 +5,9 @@ website:
   title: "NFL Stats"
   navbar:
     left:
-      - href: index.qmd
+      - href: website/index.qmd
         text: Home
 
 format:
   html:
-    theme: lumen
+    theme: lux
