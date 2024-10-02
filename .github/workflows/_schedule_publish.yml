@@ -1,7 +1,8 @@
 on:
   workflow_dispatch:
-  schedule:
-    cron: '0 5 * * *'
+  on:
+    schedule:
+      cron: '0 5 * * *'
 
 name: Quarto Schedule Publish
 
