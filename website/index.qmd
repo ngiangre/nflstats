@@ -3,6 +3,6 @@ title: Welcome
 engine: knitr
 ---
 
-![](https://a.espncdn.com/combiner/i?img=/i/teamlogos/nfl/500/buf.png&h=200&w=200){.lightbox}
+Last updated: `r lubridate::with_tz(Sys.time(), "America/New_York")`
 
-Website last rendered at `{r} Sys.time()`
+![](https://a.espncdn.com/combiner/i?img=/i/teamlogos/nfl/500/buf.png&h=200&w=200){.lightbox}
