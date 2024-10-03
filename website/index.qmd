@@ -6,3 +6,12 @@ engine: knitr
 Last updated: `r lubridate::with_tz(Sys.time(), "America/New_York")` ET
 
 ![](https://a.espncdn.com/combiner/i?img=/i/teamlogos/nfl/500/buf.png&h=200&w=200){.lightbox}
+
+```{python}
+import duckdb
+csv_url = 'https://github.com/nflverse/nflverse-data/releases/download/espn_data/qbr_season_level.csv'
+result = duckdb.read_csv(csv_url).pl()
+from reactable import Reactable
+Reactable(result)
+
+```
