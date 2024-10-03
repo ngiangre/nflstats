@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -128,8 +162,356 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Last updated: 2024-10-02 17:21:16 ET</p>
+<p>Last updated: 2024-10-02 20:46:49 ET</p>
 <p><a href="https://a.espncdn.com/combiner/i?img=/i/teamlogos/nfl/500/buf.png&amp;h=200&amp;w=200" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/nfl/500/buf.png&amp;h=200&amp;w=200" class="img-fluid"></a></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> duckdb</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>csv_url <span class="op">=</span> <span class="st">'https://github.com/nflverse/nflverse-data/releases/download/espn_data/qbr_season_level.csv'</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> duckdb.read_csv(csv_url).pl()</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>result</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (1_413, 23)</small>
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">season</th>
+<th data-quarto-table-cell-role="th">season_type</th>
+<th data-quarto-table-cell-role="th">game_week</th>
+<th data-quarto-table-cell-role="th">team_abb</th>
+<th data-quarto-table-cell-role="th">player_id</th>
+<th data-quarto-table-cell-role="th">name_short</th>
+<th data-quarto-table-cell-role="th">rank</th>
+<th data-quarto-table-cell-role="th">qbr_total</th>
+<th data-quarto-table-cell-role="th">pts_added</th>
+<th data-quarto-table-cell-role="th">qb_plays</th>
+<th data-quarto-table-cell-role="th">epa_total</th>
+<th data-quarto-table-cell-role="th">pass</th>
+<th data-quarto-table-cell-role="th">run</th>
+<th data-quarto-table-cell-role="th">exp_sack</th>
+<th data-quarto-table-cell-role="th">penalty</th>
+<th data-quarto-table-cell-role="th">qbr_raw</th>
+<th data-quarto-table-cell-role="th">sack</th>
+<th data-quarto-table-cell-role="th">name_first</th>
+<th data-quarto-table-cell-role="th">name_last</th>
+<th data-quarto-table-cell-role="th">name_display</th>
+<th data-quarto-table-cell-role="th">headshot_href</th>
+<th data-quarto-table-cell-role="th">team</th>
+<th data-quarto-table-cell-role="th">qualified</th>
+</tr>
+<tr class="odd">
+<th>i64</th>
+<th>str</th>
+<th>str</th>
+<th>str</th>
+<th>i64</th>
+<th>str</th>
+<th>f64</th>
+<th>f64</th>
+<th>f64</th>
+<th>i64</th>
+<th>f64</th>
+<th>f64</th>
+<th>f64</th>
+<th>i64</th>
+<th>f64</th>
+<th>f64</th>
+<th>f64</th>
+<th>str</th>
+<th>str</th>
+<th>str</th>
+<th>str</th>
+<th>str</th>
+<th>bool</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2006</td>
+<td>"Regular"</td>
+<td>"Season Total"</td>
+<td>"IND"</td>
+<td>1428</td>
+<td>"P. Manning"</td>
+<td>1.0</td>
+<td>86.4</td>
+<td>85.5</td>
+<td>624</td>
+<td>108.8</td>
+<td>96.0</td>
+<td>6.8</td>
+<td>0</td>
+<td>1.1</td>
+<td>87.4</td>
+<td>-5.0</td>
+<td>"Peyton"</td>
+<td>"Manning"</td>
+<td>"Peyton Manning"</td>
+<td>"https://a.espncdn.com/i/headsh…</td>
+<td>"Colts"</td>
+<td>true</td>
+</tr>
+<tr class="even">
+<td>2006</td>
+<td>"Regular"</td>
+<td>"Season Total"</td>
+<td>"NE"</td>
+<td>2330</td>
+<td>"T. Brady"</td>
+<td>2.0</td>
+<td>68.6</td>
+<td>30.9</td>
+<td>610</td>
+<td>57.9</td>
+<td>38.8</td>
+<td>4.3</td>
+<td>0</td>
+<td>2.8</td>
+<td>67.2</td>
+<td>-12.0</td>
+<td>"Tom"</td>
+<td>"Brady"</td>
+<td>"Tom Brady"</td>
+<td>"https://a.espncdn.com/i/headsh…</td>
+<td>"Patriots"</td>
+<td>true</td>
+</tr>
+<tr class="odd">
+<td>2006</td>
+<td>"Regular"</td>
+<td>"Season Total"</td>
+<td>"SD"</td>
+<td>5529</td>
+<td>"P. Rivers"</td>
+<td>3.0</td>
+<td>67.4</td>
+<td>28.2</td>
+<td>542</td>
+<td>53.0</td>
+<td>43.1</td>
+<td>-0.9</td>
+<td>0</td>
+<td>0.3</td>
+<td>67.6</td>
+<td>-10.4</td>
+<td>"Philip"</td>
+<td>"Rivers"</td>
+<td>"Philip Rivers"</td>
+<td>"https://a.espncdn.com/i/headsh…</td>
+<td>"Chargers"</td>
+<td>true</td>
+</tr>
+<tr class="even">
+<td>2006</td>
+<td>"Regular"</td>
+<td>"Season Total"</td>
+<td>"CIN"</td>
+<td>4459</td>
+<td>"C. Palmer"</td>
+<td>4.0</td>
+<td>67.1</td>
+<td>29.9</td>
+<td>623</td>
+<td>58.3</td>
+<td>43.2</td>
+<td>-0.3</td>
+<td>0</td>
+<td>2.5</td>
+<td>66.4</td>
+<td>-12.9</td>
+<td>"Carson"</td>
+<td>"Palmer"</td>
+<td>"Carson Palmer"</td>
+<td>"https://a.espncdn.com/i/headsh…</td>
+<td>"Bengals"</td>
+<td>true</td>
+</tr>
+<tr class="odd">
+<td>2006</td>
+<td>"Regular"</td>
+<td>"Season Total"</td>
+<td>"NO"</td>
+<td>2580</td>
+<td>"D. Brees"</td>
+<td>5.0</td>
+<td>66.7</td>
+<td>36.7</td>
+<td>631</td>
+<td>64.2</td>
+<td>61.0</td>
+<td>-5.2</td>
+<td>0</td>
+<td>0.6</td>
+<td>69.5</td>
+<td>-7.7</td>
+<td>"Drew"</td>
+<td>"Brees"</td>
+<td>"Drew Brees"</td>
+<td>"https://a.espncdn.com/i/headsh…</td>
+<td>"Saints"</td>
+<td>true</td>
+</tr>
+<tr class="even">
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr class="odd">
+<td>2024</td>
+<td>"Regular"</td>
+<td>"Season Total"</td>
+<td>"MIA"</td>
+<td>4241479</td>
+<td>"T. Tagovailoa"</td>
+<td>null</td>
+<td>31.1</td>
+<td>-2.4</td>
+<td>75</td>
+<td>4.0</td>
+<td>0.8</td>
+<td>3.2</td>
+<td>0</td>
+<td>0.0</td>
+<td>38.7</td>
+<td>-2.2</td>
+<td>"Tua"</td>
+<td>"Tagovailoa"</td>
+<td>"Tua Tagovailoa"</td>
+<td>"https://a.espncdn.com/i/headsh…</td>
+<td>"Dolphins"</td>
+<td>false</td>
+</tr>
+<tr class="even">
+<td>2024</td>
+<td>"Regular"</td>
+<td>"Season Total"</td>
+<td>"KC"</td>
+<td>4714365</td>
+<td>"C. Steele"</td>
+<td>null</td>
+<td>25.9</td>
+<td>0.0</td>
+<td>1</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0</td>
+<td>0.0</td>
+<td>33.1</td>
+<td>0.0</td>
+<td>"Carson"</td>
+<td>"Steele"</td>
+<td>"Carson Steele"</td>
+<td>"https://a.espncdn.com/i/headsh…</td>
+<td>"Chiefs"</td>
+<td>false</td>
+</tr>
+<tr class="odd">
+<td>2024</td>
+<td>"Regular"</td>
+<td>"Season Total"</td>
+<td>"NE"</td>
+<td>4569173</td>
+<td>"R. Stevenson"</td>
+<td>null</td>
+<td>25.0</td>
+<td>-0.1</td>
+<td>1</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0</td>
+<td>0.0</td>
+<td>20.8</td>
+<td>0.0</td>
+<td>"Rhamondre"</td>
+<td>"Stevenson"</td>
+<td>"Rhamondre Stevenson"</td>
+<td>"https://a.espncdn.com/i/headsh…</td>
+<td>"Patriots"</td>
+<td>false</td>
+</tr>
+<tr class="even">
+<td>2024</td>
+<td>"Regular"</td>
+<td>"Season Total"</td>
+<td>"CHI"</td>
+<td>4035886</td>
+<td>"K. Herbert"</td>
+<td>null</td>
+<td>18.9</td>
+<td>-0.1</td>
+<td>1</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0</td>
+<td>0.0</td>
+<td>19.5</td>
+<td>0.0</td>
+<td>"Khalil"</td>
+<td>"Herbert"</td>
+<td>"Khalil Herbert"</td>
+<td>"https://a.espncdn.com/i/headsh…</td>
+<td>"Bears"</td>
+<td>false</td>
+</tr>
+<tr class="odd">
+<td>2024</td>
+<td>"Regular"</td>
+<td>"Season Total"</td>
+<td>"LV"</td>
+<td>2576336</td>
+<td>"A. Abdullah"</td>
+<td>null</td>
+<td>18.6</td>
+<td>-0.1</td>
+<td>1</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0</td>
+<td>0.0</td>
+<td>14.0</td>
+<td>0.0</td>
+<td>"Ameer"</td>
+<td>"Abdullah"</td>
+<td>"Ameer Abdullah"</td>
+<td>"https://a.espncdn.com/i/headsh…</td>
+<td>"Raiders"</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
 
 
 
@@ -555,7 +937,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","selector":".lightbox","descPosition":"bottom","loop":false,"openEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","openEffect":"zoom","loop":false,"selector":".lightbox","descPosition":"bottom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {
