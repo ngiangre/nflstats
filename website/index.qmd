@@ -1,15 +1,78 @@
 ---
-title: Welcome
+title: Showcase player performance metrics
 engine: knitr
 ---
 
 Last updated: `r lubridate::with_tz(Sys.time(), "America/New_York")` ET
 
-![](https://a.espncdn.com/combiner/i?img=/i/teamlogos/nfl/500/buf.png&h=200&w=200){.lightbox}
-
+![](https://a.espncdn.com/combiner/i?img=/i/teamlogos/leagues/500/nfl.png&w=64&h=64&scale=crop&cquality=40&location=origin&h=200&w=200){.lightbox}
 
 ```{r,echo=FALSE,message=FALSE,warning=FALSE}
-csv_url = 'https://github.com/nflverse/nflverse-data/releases/download/espn_data/qbr_season_level.csv'
-result <- vroom::vroom(csv_url)
-DT::datatable(result)
+with_tooltip <- function(value, tooltip) {
+  htmltools::tags$abbr(style = "text-decoration: underline; text-decoration-style: dotted; cursor: help",
+            title = tooltip, value)
+}
+
+generate_table <- function(stat_type = c('passing','rushing','receiving')){
+    stat_type <- match.arg(stat_type)
+    
+    result <- 
+        nflreadr::load_nextgen_stats(
+            seasons = lubridate::year(Sys.Date()),
+            stat_type = stat_type
+        ) |> 
+            dplyr::filter(week==0) |> 
+            dplyr::select(-week) |> 
+            dplyr::mutate(dplyr::across(
+                dplyr::where(is.numeric),~{round(.x,2)}
+            ))
+    
+    cols <- 
+        intersect(colnames(result),nflreadr::dictionary_nextgen_stats$field)
+    names(cols) <- cols
+    
+    reactable::reactable(
+        result,
+        pagination = FALSE,
+        searchable = TRUE,
+        resizable = TRUE,
+        filterable = TRUE,
+        columns = purrr::map(
+            cols,
+            ~{
+                reactable::colDef(
+                    minWidth = nchar(.x)*13,
+                    header = with_tooltip(
+                        .x,
+                        nflreadr::dictionary_nextgen_stats$description[
+                            nflreadr::dictionary_nextgen_stats$field==.x
+                            ]
+                        )
+                    )
+                }
+            )
+    )
+}
+
 ```
+::: panel-tabset
+
+# Quarterbacks
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+generate_table('passing')
+```
+
+# Running Backs
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+generate_table('rushing')
+```
+
+# Wide Receivers
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+generate_table('receiving')
+```
+
+:::
