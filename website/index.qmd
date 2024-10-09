@@ -124,13 +124,13 @@ generate_table <- function(stat_type = c('passing','rushing','receiving')){
 generate_table('passing')
 ```
 
-# Running Backs
+# Rushers
 
 ```{r,echo=FALSE,message=FALSE,warning=FALSE}
 generate_table('rushing')
 ```
 
-# Wide Receivers
+# Receivers
 
 ```{r,echo=FALSE,message=FALSE,warning=FALSE}
 generate_table('receiving')
