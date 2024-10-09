@@ -1,11 +1,8 @@
 ---
-title: Showcase player performance metrics
 engine: knitr
 ---
 
 Last updated: `r lubridate::with_tz(Sys.time(), "America/New_York")` ET
-
-![](https://a.espncdn.com/combiner/i?img=/i/teamlogos/leagues/500/nfl.png&w=64&h=64&scale=crop&cquality=40&location=origin&h=200&w=200){.lightbox}
 
 ```{r,echo=FALSE,message=FALSE,warning=FALSE}
 with_tooltip <- function(value, tooltip) {
@@ -33,17 +30,20 @@ generate_table <- function(stat_type = c('passing','rushing','receiving')){
         dplyr::left_join(
             nflreadr::load_teams() |> 
                 dplyr::select(dplyr::all_of(c(
-                    'team_abbr','team_name','team_logo_espn'
+                    'team_abbr','team_name',
+                    'team_logo_espn','team_division'
                 ))),
             by = 'team_abbr'
         )
     
     cols <- 
-        intersect(colnames(result),nflreadr::dictionary_nextgen_stats$field)
+        union(
+            intersect(colnames(result),nflreadr::dictionary_nextgen_stats$field),
+            c('team_division','team_name')
+        )
     cols <- setdiff(cols,c('player_position','team_abbr','season','season_type',
                            'player_gsis_id','player_first_name','player_last_name',
-                           'player_jersey_number','player_short_name',
-                           'team'))
+                           'player_jersey_number','player_short_name'))
     names(cols) <- cols
     
     reactable::reactable(
@@ -88,10 +88,12 @@ generate_table <- function(stat_type = c('passing','rushing','receiving')){
                                 pos <- result$player_position[index]
                                 name <- result$player_display_name[index]
                                 team <- result$team_name[index]
+                                team_division <- result$team_division[index]
                                 htmltools::div(
                                   htmltools::div(style = "font-weight: 600", name),
-                                  htmltools::div(style = "font-size: 0.75rem",pos),
-                                  htmltools::div(style = "font-size: 0.75rem",team)
+                                  htmltools::div(style = "font-size: 0.80rem",pos),
+                                  htmltools::div(style = "font-size: 0.80rem",team),
+                                  htmltools::div(style = "font-size: 0.80rem",team_division)
                                 )
                             },
                             name = '',
@@ -118,6 +120,10 @@ generate_table <- function(stat_type = c('passing','rushing','receiving')){
 ::: {.column-screen}
 ::: panel-tabset
 
+# Next Gen Stats
+
+::: panel-tabset
+
 # Quarterbacks
 
 ```{r,echo=FALSE,message=FALSE,warning=FALSE}
@@ -136,5 +142,6 @@ generate_table('rushing')
 generate_table('receiving')
 ```
 
+:::
 :::
 :::
