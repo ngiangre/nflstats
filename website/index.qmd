@@ -94,7 +94,7 @@ generate_table <- function(stat_type = c('passing','rushing','receiving')){
                                   htmltools::div(style = "font-size: 0.75rem",team)
                                 )
                             },
-                            name = name_,
+                            name = '',
                             sticky = 'left',
                         )
                     }else{
