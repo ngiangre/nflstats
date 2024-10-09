@@ -29,11 +29,21 @@ generate_table <- function(stat_type = c('passing','rushing','receiving')){
         dplyr::left_join(
             nflreadr::load_players(),
             by = c("player_gsis_id" = "gsis_id","team_abbr")
+        ) |> 
+        dplyr::left_join(
+            nflreadr::load_teams() |> 
+                dplyr::select(dplyr::all_of(c(
+                    'team_abbr','team_name','team_logo_espn'
+                ))),
+            by = 'team_abbr'
         )
     
     cols <- 
         intersect(colnames(result),nflreadr::dictionary_nextgen_stats$field)
-    cols <- setdiff(cols,c('player_position','team_abbr','season','season_type'))
+    cols <- setdiff(cols,c('player_position','team_abbr','season','season_type',
+                           'player_gsis_id','player_first_name','player_last_name',
+                           'player_jersey_number','player_short_name',
+                           'team'))
     names(cols) <- cols
     
     reactable::reactable(
@@ -52,31 +62,39 @@ generate_table <- function(stat_type = c('passing','rushing','receiving')){
             list(
                 headshot = reactable::colDef(
                     cell = reactablefmtr::embed_img(result$headshot,
-                                                    width = 120,
-                                                    height=100,
+                                                    width = 135,
+                                                    height = 100,
                                                     horizontal_align = "center"),
                     
                     sticky = 'left',
-                    name = ''
+                    name = '',
+                    minWidth = 150,
+                    style = reactablefmtr::background_img(
+                        data = result,
+                        width = '90%',
+                        height = '90%',
+                        img_ref = 'team_logo_espn'
+                    )
                 )
             ),
             purrr::map(
                 cols,
                 ~{
                     if(.x=='player_display_name'){
+                        name_ <- 'player'
                         reactable::colDef(
-                            minWidth = nchar(.x)*13,
+                            minWidth = nchar(name_)*13*2,
                             cell = function(value,index){
                                 pos <- result$player_position[index]
                                 name <- result$player_display_name[index]
-                                team <- result$team_abbr[index]
+                                team <- result$team_name[index]
                                 htmltools::div(
                                   htmltools::div(style = "font-weight: 600", name),
-                                  htmltools::div(style = "font-size: 0.75rem", 
-                                                 paste0(pos,'; ',team))
+                                  htmltools::div(style = "font-size: 0.75rem",pos),
+                                  htmltools::div(style = "font-size: 0.75rem",team)
                                 )
                             },
-                            name = 'player'
+                            name = name_
                         )
                     }else{
                         reactable::colDef(
