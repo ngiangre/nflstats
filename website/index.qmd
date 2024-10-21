@@ -71,12 +71,13 @@ with_tooltip <- function(value, tooltip) {
       value)
 }
 
-generate_table <- function(stat_type = c('passing','rushing','receiving')){
+generate_table <- function(year = 0,stat_type = c('passing','rushing','receiving')){
     stat_type <- match.arg(stat_type)
+    stopifnot(year>=0 & year<=8)
     
     result <- 
         nflreadr::load_nextgen_stats(
-            seasons = lubridate::year(Sys.Date()),
+            seasons = nflreadr::get_current_season()-year,
             stat_type = stat_type
         ) |> 
             dplyr::filter(week==0) |> 
@@ -85,8 +86,9 @@ generate_table <- function(stat_type = c('passing','rushing','receiving')){
                 dplyr::where(is.numeric),~{round(.x,2)}
             )) |> 
         dplyr::left_join(
-            nflreadr::load_players(),
-            by = c("player_gsis_id" = "gsis_id","team_abbr")
+            nflreadr::load_players() |> 
+                dplyr::select(-team_abbr),
+            by = c("player_gsis_id" = "gsis_id")
         ) |> 
         dplyr::left_join(
             nflreadr::load_teams() |> 
@@ -102,7 +104,7 @@ generate_table <- function(stat_type = c('passing','rushing','receiving')){
             intersect(colnames(result),dict$field),
             c('team_division','team_name')
         )
-    cols <- setdiff(cols,c('player_position','team_abbr','season','season_type',
+    cols <- setdiff(cols,c('team_abbr','season','season_type',
                            'player_gsis_id','player_first_name','player_last_name',
                            'player_jersey_number','player_short_name'))
     names(cols) <- cols
@@ -113,7 +115,8 @@ generate_table <- function(stat_type = c('passing','rushing','receiving')){
             dplyr::relocate(headshot) |> 
             dplyr::select(dplyr::any_of(c(
                 'headshot','player_display_name',cols
-            )))
+            ))) |> 
+            dplyr::relocate(player_position,.after = dplyr::last_col())
     
     sort_col_lst <- 
         list(
@@ -191,6 +194,7 @@ generate_table <- function(stat_type = c('passing','rushing','receiving')){
 }
 
 ```
+
 ::: {.column-screen}
 ::: panel-tabset
 
@@ -198,23 +202,53 @@ generate_table <- function(stat_type = c('passing','rushing','receiving')){
 
 ::: panel-tabset
 
-# Quarterbacks
+## Current Season
+
+::: panel-tabset
+
+### Quarterbacks
 
 ```{r,echo=FALSE,message=FALSE,warning=FALSE}
-generate_table('passing')
+generate_table(stat_type = 'passing')
 ```
 
-# Rushers
+### Rushers
 
 ```{r,echo=FALSE,message=FALSE,warning=FALSE}
-generate_table('rushing')
+generate_table(stat_type = 'rushing')
 ```
 
-# Receivers
+### Receivers
 
 ```{r,echo=FALSE,message=FALSE,warning=FALSE}
-generate_table('receiving')
+generate_table(stat_type = 'receiving')
 ```
+
+:::
+
+## Last Season
+
+::: panel-tabset
+
+### Quarterbacks
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+generate_table(year = 1,stat_type = 'passing')
+```
+
+### Rushers
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+generate_table(year = 1,stat_type = 'rushing')
+```
+
+### Receivers
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+generate_table(year = 1,stat_type = 'receiving')
+```
+
+:::
 
 :::
 :::
