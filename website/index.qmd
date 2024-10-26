@@ -2,8 +2,6 @@
 engine: knitr
 ---
 
-Last updated: `r lubridate::with_tz(Sys.time(), "America/New_York")` ET
-
 ```{r,echo=FALSE,message=FALSE,warning=FALSE}
 dict <- 
     tibble::tribble(
@@ -129,20 +127,20 @@ generate_table <- function(year = 0,stat_type = c('passing','rushing','receiving
         reactable_table,
         defaultSorted = sort_col_lst[[stat_type]],
         defaultSortOrder = 'desc',
-        pagination = FALSE,
+        pagination = TRUE,
         searchable = TRUE,
-        resizable = TRUE,
+        resizable = FALSE,
         columns = c(
             list(
                 headshot = reactable::colDef(
                     cell = reactablefmtr::embed_img(result$headshot,
-                                                    width = 135,
-                                                    height = 100,
+                                                    width = 110,
+                                                    height = 80,
                                                     horizontal_align = "center"),
                     
                     sticky = 'left',
                     name = '',
-                    minWidth = 150,
+                    minWidth = 120,
                     style = reactablefmtr::background_img(
                         data = result,
                         width = '90%',
@@ -196,29 +194,26 @@ generate_table <- function(year = 0,stat_type = c('passing','rushing','receiving
 ```
 
 ::: {.column-screen}
-::: panel-tabset
-
-# Next Gen Stats
 
 ::: panel-tabset
 
-## Current Season
+# Current Season
 
 ::: panel-tabset
 
-### Quarterbacks
+## Quarterbacks
 
 ```{r,echo=FALSE,message=FALSE,warning=FALSE}
 generate_table(stat_type = 'passing')
 ```
 
-### Rushers
+## Rushers
 
 ```{r,echo=FALSE,message=FALSE,warning=FALSE}
 generate_table(stat_type = 'rushing')
 ```
 
-### Receivers
+## Receivers
 
 ```{r,echo=FALSE,message=FALSE,warning=FALSE}
 generate_table(stat_type = 'receiving')
@@ -226,23 +221,23 @@ generate_table(stat_type = 'receiving')
 
 :::
 
-## Last Season
+# Last Season
 
 ::: panel-tabset
 
-### Quarterbacks
+## Quarterbacks
 
 ```{r,echo=FALSE,message=FALSE,warning=FALSE}
 generate_table(year = 1,stat_type = 'passing')
 ```
 
-### Rushers
+## Rushers
 
 ```{r,echo=FALSE,message=FALSE,warning=FALSE}
 generate_table(year = 1,stat_type = 'rushing')
 ```
 
-### Receivers
+## Receivers
 
 ```{r,echo=FALSE,message=FALSE,warning=FALSE}
 generate_table(year = 1,stat_type = 'receiving')
@@ -251,5 +246,9 @@ generate_table(year = 1,stat_type = 'receiving')
 :::
 
 :::
-:::
+
+Generated from Next Gen Stats using the {nflreadr} R package
+
+Last updated: `r lubridate::with_tz(Sys.time(), "America/New_York")` ET
+
 :::
