@@ -171,12 +171,19 @@ generate_table <- function(year = 0,stat_type = c('passing','rushing','receiving
                             name = '',
                             sticky = 'left',
                         )
+                    }else if(.x %in% c('team_division','team_name','player_position')){
+                        reactable::colDef(
+                            name = .x,
+                            show = FALSE,
+                            searchable = TRUE
+                        )
                     }else{
                         header_ <- dict$header[dict$field==.x]
                         if(length(header_)==0)header_ <- toupper(.x)
                         reactable::colDef(
                             name = header_,
-                            minWidth = nchar(header_)*20,
+                            minWidth = max(nchar(header_)*22,
+                                           max(nchar(reactable_table[[.x]]))*22),
                             header = with_tooltip(
                                 value = header_,
                                 tooltip = dict$description[
