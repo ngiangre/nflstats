@@ -1,6 +1,11 @@
 # Base image with R, Quarto, and renv support
 FROM analythium/r2u-quarto:20.04
 
+# Install system dependencies including libpng-dev
+RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    && rm -rf /var/lib/apt/lists/*
+
 # Set the working directory
 WORKDIR /usr/src/app
 
